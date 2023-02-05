@@ -44,8 +44,7 @@ function sostavChisla(massivChisel, chislo) {
       // if (sumArr.length > 2) {
       //   sum -= sumArr[sumArr.length - 1];
       //   sumArr.pop();     
-      // }
-      
+      // }   
     }
   }
 
