@@ -13,45 +13,49 @@
   @return Array<Array<number>>
 */
 function sostavChisla(massivChisel, chislo) {
-  let sum = 0;
-  const sumArr = [];
-  const result = [];
 
-  const sortMassivChisel = massivChisel.sort((a, b) => a - b);
-	
-  for (let index = 0; index < sortMassivChisel.length; index++) {
-    sum += sortMassivChisel[index];
-    sumArr.push(sortMassivChisel[index]);
+  const sortedMassivChisel = massivChisel.sort((a, b) => a - b);
+  let result = [];
+  let currentCombo = [];
+  
+  const findCombos = (startIndex, sum) => {
 
-    if (sum === chislo) {
-      result.push([...sumArr]);
+    let isIncludes = false;
+
+    for (const underArr of result) {
+      if (underArr.join('') === [...currentCombo].join('')) {
+        isIncludes = true;
+        break;
+      }
     }
 
-    if (sum > chislo) {
-      sumArr.pop();
-      sum -= sortMassivChisel[index];
-
-      index = sortMassivChisel.indexOf(sumArr[sumArr.length - 1]);
-
-      sumArr.pop();
-      sum -= sortMassivChisel[index];
-
-      // if (sumArr.length > 3) {
-      //   sum -= sumArr[sumArr.length - 1];
-      //   sumArr.pop();
-      // }
-
-      // if (sumArr.length > 2) {
-      //   sum -= sumArr[sumArr.length - 1];
-      //   sumArr.pop();     
-      // }   
+    if (sum === chislo && !isIncludes) {
+      result.push([...currentCombo]);
     }
+
+    for (let i = startIndex; i < sortedMassivChisel.length; i++) {
+      let currentNumber = sortedMassivChisel[i];
+
+      if (sum + currentNumber <= chislo) {
+ 
+        currentCombo.push(currentNumber);
+        findCombos(i + 1, sum + currentNumber);
+        currentCombo.pop();
+
+      }
+
+    }
+
   }
+  
+  findCombos(0, 0);
 
 	return result;
 }
 
 console.log(sostavChisla([1, 2, 3, 4, 5, 6, 7, 8], 15));
+console.log(sostavChisla([7, 8, 3, 4, 5, 6, 1, 2], 9));
+console.log(sostavChisla([7, 6, 5, 4, 3, 2, 1], 11));
 
 function compareNumericArrays(arr1, arr2) {
   if(arr1.length !== arr2.length) {
@@ -84,7 +88,7 @@ function compareArraysOfNumericArrays(arr1, arr2) {
   return true;
 }
 
-// runTests();
+runTests();
 
 function runTests() {
     const tests = [
